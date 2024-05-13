@@ -1,6 +1,8 @@
 package com.templates.valens.v1.services.ServiceImpl;
 
 import com.templates.valens.v1.dtos.response.LoginResponseDTO;
+import com.templates.valens.v1.models.Candidate;
+import com.templates.valens.v1.models.Position;
 import com.templates.valens.v1.models.Role;
 import com.templates.valens.v1.models.User;
 import com.templates.valens.v1.security.User.UserSecurityDetails;
@@ -22,5 +24,7 @@ public class ServiceImpl {
     public Set<Role> roles;
     public UserSecurityDetails userSecurityDetails;
     public List<GrantedAuthority> authorities;
+    public Candidate candidate;
+    public Position position;
 
 }

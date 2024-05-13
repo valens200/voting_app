@@ -4,6 +4,7 @@ import com.templates.valens.v1.dtos.requests.CreateUserDTO;
 import com.templates.valens.v1.models.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface IUserService {
@@ -12,4 +13,8 @@ public interface IUserService {
     User getById(UUID id);
 
     List<User> getAll();
+
+    User getByEmail(String email);
+
+
 }

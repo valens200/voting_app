@@ -13,6 +13,7 @@ public interface IPositionService {
     public Position update(CreatePositionDTO dto, UUID positionId);
     public void delete(UUID positionId);
     public List<Position> getAll();
+    public Position getById(UUID positionId);
     public Page<Position> getAllPaginated(Pageable pageable);
     public Position assignCandidate(UUID candidateId, UUID positionId);
     public Position removeCandidate(UUID candidateId, UUID positionId);

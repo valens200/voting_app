@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -57,4 +58,16 @@ public class UserServiceImpl extends ServiceImpl implements IUserService {
             return null;
         }
     }
+
+    @Override
+    public User getByEmail(String email) {
+        try{
+            return this.userRepository.findUserByEmail(email).orElseThrow(()->new NotFoundException("The user with the provided email is not found"));
+        }catch (Exception exception){
+             ExceptionsUtils.handleServiceExceptions(exception);
+             return null;
+        }
+    }
+
+
 }
