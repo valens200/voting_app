@@ -2,16 +2,20 @@ package com.templates.valens.v1.services.ServiceImpl;
 
 import com.templates.valens.v1.dtos.requests.CreateVoteDTO;
 import com.templates.valens.v1.exceptions.NotFoundException;
+import com.templates.valens.v1.models.User;
 import com.templates.valens.v1.models.Vote;
 import com.templates.valens.v1.repositories.IVoteRepository;
 import com.templates.valens.v1.services.*;
 import com.templates.valens.v1.utils.ExceptionsUtils;
+import com.templates.valens.v1.utils.Helper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -111,6 +115,31 @@ public class VoteServiceImpl extends ServiceImpl implements IVoteService {
             return null;
         }
     }
+    @Override
+    public Map<String, Map<String, Set<User>>> getResults(UUID sessionId){
+        try {
+            session = sessionService.getById(sessionId);
+            List<Vote> votes = voteRepository.findAllByVotingSession(session);
+            return Helper.getGroupedVotes(votes);
+        }catch (Exception exception){
+            ExceptionsUtils.handleServiceExceptions(exception);
+            return null;
+        }
+    }
+
+    @Override
+    public int countVotesByCandidate(UUID candidateId, UUID votingSessionId){
+        try {
+            candidate = candidateService.getById(candidateId);
+            session = sessionService.getById(votingSessionId);
+            return voteRepository.countAllByCandidateAndVotingSession(candidate,session);
+        }catch (Exception exception){
+            ExceptionsUtils.handleServiceExceptions(exception);
+            return -1;
+        }
+    }
+
+
 
     @Override
     public Page<Vote> getAllBYPosition(UUID positionId, Pageable pageable) {

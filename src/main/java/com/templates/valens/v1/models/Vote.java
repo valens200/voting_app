@@ -23,6 +23,9 @@ public class Vote {
     @OneToOne
     @JoinColumn(name = "candidate_id")
     private Candidate candidate;
+
+    @ManyToOne
+    private VotingSession votingSession;
     @OneToOne
     @JoinColumn(name = "voter_id")
     private User voter;

@@ -4,9 +4,9 @@ import com.templates.valens.v1.exceptions.NotFoundException;
 import com.templates.valens.v1.models.Candidate;
 import com.templates.valens.v1.models.User;
 import com.templates.valens.v1.repositories.ICandidateRepository;
+import com.templates.valens.v1.repositories.IPositionRepository;
 import com.templates.valens.v1.repositories.IUserRepository;
 import com.templates.valens.v1.services.ICandidateService;
-import com.templates.valens.v1.services.IPositionService;
 import com.templates.valens.v1.services.IUserService;
 import com.templates.valens.v1.utils.ExceptionsUtils;
 import com.templates.valens.v1.utils.SecurityUtils;
@@ -23,7 +23,7 @@ public class CandidateServiceImpl extends ServiceImpl  implements ICandidateServ
     private final ICandidateRepository candidateRepository;
     private final IUserRepository userRepository;
     private final IUserService userService;
-    private final IPositionService positionService;
+    private final IPositionRepository positionRepository;
     @Override
     public Candidate create(CreateCandidateDTO dto) {
         try{
@@ -50,7 +50,6 @@ public class CandidateServiceImpl extends ServiceImpl  implements ICandidateServ
             user.setPassword(SecurityUtils.HashString(dto.getPassword()));
             user = userRepository.save(user);
 
-
             candidate.setFirstName(dto.getFirstName());
             candidate.setLastName(dto.getLastName());
             candidate.setNationalId(dto.getNationalId());
@@ -63,6 +62,8 @@ public class CandidateServiceImpl extends ServiceImpl  implements ICandidateServ
             return null;
         }
     }
+
+
 
     @Override
     public void delete(UUID candidateId) {
@@ -116,7 +117,7 @@ public class CandidateServiceImpl extends ServiceImpl  implements ICandidateServ
     @Override
     public Page<Candidate> getAllByPosition(Pageable pageable, UUID positionId) {
         try {
-            position = positionService.getById(positionId);
+            position = positionRepository.findById(positionId).orElseThrow(()-> new NotFoundException("The positition with the provided id is not found"));
             return candidateRepository.findAllByPositionsContains(position,pageable);
         }catch (Exception exception){
             ExceptionsUtils.handleServiceExceptions(exception);
