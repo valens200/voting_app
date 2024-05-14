@@ -3,8 +3,10 @@ package com.templates.valens.v1.services.ServiceImpl;
 import com.templates.valens.v1.dtos.requests.CreateUserDTO;
 import com.templates.valens.v1.exceptions.BadRequestException;
 import com.templates.valens.v1.exceptions.NotFoundException;
+import com.templates.valens.v1.exceptions.UnauthorizedException;
 import com.templates.valens.v1.models.User;
 import com.templates.valens.v1.repositories.IUserRepository;
+import com.templates.valens.v1.security.User.UserSecurityDetails;
 import com.templates.valens.v1.services.IRoleService;
 import com.templates.valens.v1.services.IUserService;
 import com.templates.valens.v1.utils.ExceptionsUtils;
@@ -12,6 +14,8 @@ import com.templates.valens.v1.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -66,6 +70,25 @@ public class UserServiceImpl extends ServiceImpl implements IUserService {
         }catch (Exception exception){
              ExceptionsUtils.handleServiceExceptions(exception);
              return null;
+        }
+    }
+
+    @Override
+    public User getLoggedInUser() {
+        try{
+                UserSecurityDetails userSecurityDetails;
+                // Retrieve the currently authenticated user from the SecurityContextHolder
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+                if (authentication != null) {
+                    userSecurityDetails = (UserSecurityDetails) authentication.getPrincipal();
+                    return this.userRepository.findUserByEmail(userSecurityDetails.getUsername()).orElseThrow(() -> new UnauthorizedException("You are not authorized! please login"));
+                } else {
+                    throw new UnauthorizedException("You are not authorized! please login");
+                }
+        }catch (Exception exception){
+            ExceptionsUtils.handleServiceExceptions(exception);
+            return null;
         }
     }
 

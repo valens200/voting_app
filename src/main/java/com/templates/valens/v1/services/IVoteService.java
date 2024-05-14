@@ -15,9 +15,12 @@ public interface IVoteService {
     public Vote update(CreateVoteDTO dto,UUID voteId);
     public void delete(UUID id);
     public List<Vote> getAll();
+
+    Vote getById(UUID voteId);
+
     public Page<Vote> getAllPaginated(Pageable pageable);
-    public Page<Vote> getAllBYPosition(UUID positionId);
-    public Page<Vote> getAllPositionAndCandidate(UUID positionId, UUID candidateId);
-    public Page<Vote> getAllByCandidate(UUID candidateId);
+    public Page<Vote> getAllBYPosition(UUID positionId, Pageable pageable);
+    public Page<Vote> getAllPositionAndCandidate(UUID positionId, UUID candidateId, Pageable pageable);
+    public Page<Vote> getAllByCandidate(UUID candidateId, Pageable pageable);
 
 }

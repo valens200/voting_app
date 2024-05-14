@@ -73,9 +73,20 @@ public class CandidateServiceImpl extends ServiceImpl  implements ICandidateServ
             return;
         }
     }
+    @Override
     public Candidate getById(UUID candidateId){
         try{
             return candidateRepository.findById(candidateId).orElseThrow(()-> new NotFoundException("The candidate with the provided id is not found."));
+        }catch (Exception exception){
+            ExceptionsUtils.handleServiceExceptions(exception);
+            return null;
+        }
+    }
+
+    @Override
+    public Candidate getByProfile(User profile){
+        try{
+            return candidateRepository.findByProfile(profile).orElseThrow(()-> new NotFoundException("The candidate with the provided profile is not found"));
         }catch (Exception exception){
             ExceptionsUtils.handleServiceExceptions(exception);
             return null;

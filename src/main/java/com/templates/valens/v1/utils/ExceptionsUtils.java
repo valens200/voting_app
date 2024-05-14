@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpServerErrorException;
 
-import java.nio.file.AccessDeniedException;
-
 public class ExceptionsUtils {
 
     public static  <T> ResponseEntity<ApiResponse> handleControllerExceptions(Exception e) {
@@ -44,7 +42,7 @@ public class ExceptionsUtils {
                     false,
                     e.getMessage()
             ), HttpStatus.BAD_REQUEST);
-        }else  if(e instanceof UNauthorizedException){
+        }else  if(e instanceof UnauthorizedException){
             return new ResponseEntity<>(new ApiResponse(
                     false,
                     "You are not allowed to access this resource"
@@ -68,8 +66,8 @@ public class ExceptionsUtils {
             throw new InternalServerErrorException(e.getMessage());
         } else if (e instanceof BadRequestException){
             throw new BadRequestException(e.getMessage());
-        }else  if(e instanceof UNauthorizedException){
-            throw  new UNauthorizedException("You are not allowed to access this resource");
+        }else  if(e instanceof UnauthorizedException){
+            throw  new UnauthorizedException("You are not allowed to access this resource");
         } else {
             throw new RuntimeException("Failed!! Something went wrong " + e.getMessage(), e);
         }

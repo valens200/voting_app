@@ -19,5 +19,7 @@ public interface IPositionService {
     public Position removeCandidate(UUID candidateId, UUID positionId);
     public Position removeVotingSession(UUID sessionId, UUID positionId);
     public Position assignVotingSession(UUID sessionId, UUID positionId);
-    public Page<Position> getAllBySession(UUID sessionId);
+    public List<Position> getAllBySession(UUID sessionId);
+
+    Page<Position> getAllBySession(UUID sessionId, Pageable pageable);
 }

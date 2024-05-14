@@ -15,6 +15,8 @@ public interface IUserService {
     List<User> getAll();
 
     User getByEmail(String email);
+    User getLoggedInUser();
+
 
 
 }

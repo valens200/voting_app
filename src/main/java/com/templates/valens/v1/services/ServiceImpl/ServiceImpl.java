@@ -1,10 +1,7 @@
 package com.templates.valens.v1.services.ServiceImpl;
 
 import com.templates.valens.v1.dtos.response.LoginResponseDTO;
-import com.templates.valens.v1.models.Candidate;
-import com.templates.valens.v1.models.Position;
-import com.templates.valens.v1.models.Role;
-import com.templates.valens.v1.models.User;
+import com.templates.valens.v1.models.*;
 import com.templates.valens.v1.security.User.UserSecurityDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -24,7 +21,18 @@ public class ServiceImpl {
     public Set<Role> roles;
     public UserSecurityDetails userSecurityDetails;
     public List<GrantedAuthority> authorities;
+//    Candidate
+    public Set<Candidate> candidates;
     public Candidate candidate;
+    public Candidate voter;
+//    Position
+
     public Position position;
+//    voting session
+    public VotingSession session;
+//    Vote
+    public Vote vote;
+    public Set<VotingSession> sessions;
+
 
 }

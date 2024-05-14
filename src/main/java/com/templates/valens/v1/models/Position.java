@@ -1,15 +1,18 @@
 package com.templates.valens.v1.models;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,9 +20,13 @@ public class Position {
 
     private String name;
     @ManyToMany(mappedBy = "positions")
-    private List<Candidate> candidates;
+    private Set<Candidate> candidates;
 
     @ManyToMany(mappedBy = "positions")
-    private List<VotingSession>  votingSessions;
+    private Set<VotingSession>  votingSessions;
+
+    public Position(String name) {
+        this.name = name;
+    }
 
 }

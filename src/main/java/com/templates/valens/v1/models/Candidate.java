@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -15,11 +16,11 @@ public class Candidate  extends Person{
     private User profile;
 
     @OneToMany
-    private List<Vote> votes;
+    private Set<Vote> votes;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "candidates_positions", joinColumns=@JoinColumn(name = "candidate_id"), inverseJoinColumns = @JoinColumn(name = "position_id"))
     @JsonIgnore
-    private List<Position> positions;
+    private Set<Position> positions;
 
     public Candidate(String firstName, String lastName, String nationalId, String phoneNumber, String email){
         super(firstName,lastName,nationalId,phoneNumber, email);
