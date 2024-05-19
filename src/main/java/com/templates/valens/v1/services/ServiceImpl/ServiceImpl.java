@@ -28,6 +28,7 @@ public class ServiceImpl {
 //    Position
 
     public Position position;
+    public  Set<Position> positions;
 //    voting session
     public VotingSession session;
 //    Vote

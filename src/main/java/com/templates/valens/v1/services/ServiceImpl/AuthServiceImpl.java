@@ -43,7 +43,6 @@ public class AuthServiceImpl extends ServiceImpl implements IAuthService {
             loginResponseDTO = new LoginResponseDTO(token,user);
             return loginResponseDTO;
         }catch (Exception exception){
-            exception.printStackTrace();
             ExceptionsUtils.handleServiceExceptions(exception);
             return null;
         }

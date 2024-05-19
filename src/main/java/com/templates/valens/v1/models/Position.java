@@ -1,5 +1,6 @@
 package com.templates.valens.v1.models;
 
+import com.templates.valens.v1.audits.InitiatorAudit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,16 +14,16 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Position {
+public class Position  extends InitiatorAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     private String name;
-    @ManyToMany(mappedBy = "positions")
+    @ManyToMany(mappedBy = "positions", fetch = FetchType.EAGER)
     private Set<Candidate> candidates;
 
-    @ManyToMany(mappedBy = "positions")
+    @ManyToMany(mappedBy = "positions", fetch = FetchType.EAGER)
     private Set<VotingSession>  votingSessions;
 
     public Position(String name) {

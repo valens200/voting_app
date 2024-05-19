@@ -26,7 +26,11 @@ public class PositionServiceImpl extends ServiceImpl implements IPositionService
     @Override
     public Position create(CreatePositionDTO dto) {
         try{
+            session = sessionService.getById(dto.getSessionId());
             position = new Position(dto.getName());
+            sessions = new HashSet<>();
+            sessions.add(session);
+            position.setVotingSessions(sessions);
             return positionRepository.save(position);
         }catch (Exception exception){
             ExceptionsUtils.handleServiceExceptions(exception);

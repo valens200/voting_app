@@ -2,16 +2,19 @@ package com.templates.valens.v1.controllers;
 import com.templates.valens.v1.dtos.requests.CreatePositionDTO;
 import com.templates.valens.v1.payload.ApiResponse;
 import com.templates.valens.v1.services.IPositionService;
+import com.templates.valens.v1.utils.Constants;
 import com.templates.valens.v1.utils.ExceptionsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/positions")
-public class PositionController {
+public class PositionController extends Controller {
 
     @Autowired
     private IPositionService positionService;
@@ -63,8 +66,9 @@ public class PositionController {
     }
 
     @GetMapping("/paginated")
-    public ResponseEntity<ApiResponse> getAllPaginated(Pageable pageable) {
+    public ResponseEntity<ApiResponse> getAllPaginated(@RequestParam(value = "page", defaultValue = com.templates.valens.v1.utils.Constants.DEFAULT_PAGE_NUMBER) int page, @RequestParam(value = "limit", defaultValue = Constants.DEFAULT_PAGE_SIZE) int limit) {
         try {
+            Pageable pageable = PageRequest.of(page, limit, Sort.Direction.DESC, "createdAt");
             return ResponseEntity.ok(new ApiResponse(true, "Positions retrieved successfully", positionService.getAllPaginated(pageable)));
         } catch (Exception exception) {
             return ExceptionsUtils.handleControllerExceptions(exception);

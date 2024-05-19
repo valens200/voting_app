@@ -15,7 +15,8 @@ public class Candidate  extends Person{
     @JoinColumn(name = "profile_id")
     private User profile;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Vote> votes;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "candidates_positions", joinColumns=@JoinColumn(name = "candidate_id"), inverseJoinColumns = @JoinColumn(name = "position_id"))

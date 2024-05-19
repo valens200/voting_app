@@ -12,4 +12,5 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CreatePositionDTO {
     private String name;
+    private UUID sessionId;
 }

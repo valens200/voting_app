@@ -1,5 +1,6 @@
 package com.templates.valens.v1.services.ServiceImpl;
 import com.templates.valens.v1.dtos.requests.CreateCandidateDTO;
+import com.templates.valens.v1.exceptions.BadRequestException;
 import com.templates.valens.v1.exceptions.NotFoundException;
 import com.templates.valens.v1.models.Candidate;
 import com.templates.valens.v1.models.User;
@@ -14,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,10 +30,17 @@ public class CandidateServiceImpl extends ServiceImpl  implements ICandidateServ
     @Override
     public Candidate create(CreateCandidateDTO dto) {
         try{
+            if(dto.getPositionIds() == null) throw new BadRequestException("Positions required");
+            positions = new HashSet<>();
+            for(UUID positionId: dto.getPositionIds()){
+                position = positionRepository.findById(positionId).orElseThrow(()->new NotFoundException("The position with the provided is not found"));
+                positions.add(position);
+            }
             candidate = new Candidate(dto.getFirstName(), dto.getLastName(), dto.getNationalId(), dto.getPhoneNumber(), dto.getEmail());
             user = new User(dto.getEmail(), dto.getUserName(), SecurityUtils.HashString(dto.getPassword()));
             user = userRepository.save(user);
             candidate.setProfile(user);
+            candidate.setPositions(positions);
             return candidateRepository.save(candidate);
         }catch (Exception exception){
             ExceptionsUtils.handleServiceExceptions(exception);
